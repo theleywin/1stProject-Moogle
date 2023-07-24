@@ -1,0 +1,70 @@
+﻿@page "/"
+
+<PageTitle>Moogle-wara</PageTitle>
+
+<h1 class = "taitel"> MOOGLE </h1>
+
+<input class="p-1 my-4" @bind="query" placeholder="Introduzca su búsqueda" @onkeyup="ButtonEnter">
+
+<button type="default" class="buttonPrimary" @onclick="RunQuery"> I</button>
+
+
+
+@if (!string.IsNullOrEmpty(result.Suggestion)) {
+    <div class="suggestion">
+        <p>¿Tal vez quieras decir <strong><a href="#" @onclick="() => RunSuggest(result.Suggestion)">@result.Suggestion</a></strong>?</p>
+    </div>
+}
+
+<ul class="results">
+@foreach (var item in result.Items()) {
+    <li>
+        <div class="item">
+            <p class="title" ><a  href = "#" @onclick = "() => CargarTxt(item.Title)" > @item.Title </a></p>
+            <p> ...@item.Snippet... </p>
+        </div>
+    </li>
+}
+</ul>
+
+@code {
+    private string query = "";
+    private SearchResult result = new SearchResult();
+
+    private void RunQuery() {
+        result = Moogle.Query(query);
+    }
+    private void ButtonEnter(KeyboardEventArgs xd)
+    {
+        if(xd.Code=="Enter")
+        {
+            RunQuery();
+        }
+    }
+ private void RunSuggest(string sug)
+    {
+        result = Moogle.Query(sug);
+    }
+   
+    private void CargarTxt(string title)
+   {
+        string ruta = MoogleEngine.Reader.path;
+        char separator = Path.DirectorySeparatorChar;
+        
+        
+       try{
+                using(System.Diagnostics.Process process = new System.Diagnostics.Process())
+                {
+                    process.StartInfo.FileName = ruta + separator + title;
+                    process.StartInfo.UseShellExecute = true;
+                    process.StartInfo.WindowStyle = System.Diagnostics.ProcessWindowStyle.Normal;
+                    process.Start();    
+
+                }
+           }
+catch (System.Exception) {}
+   }
+
+}
+
+

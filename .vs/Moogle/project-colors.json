@@ -1,0 +1,16 @@
+{
+  "Version": 1,
+  "ProjectMap": {
+    "8630ec0b-d076-40b2-b0d1-bf4324ec9991": {
+      "ProjectGuid": "8630ec0b-d076-40b2-b0d1-bf4324ec9991",
+      "DisplayName": "MoogleServer",
+      "ColorIndex": 0
+    },
+    "0a755d1b-0fdf-487a-bdbf-9b14da68de07": {
+      "ProjectGuid": "0a755d1b-0fdf-487a-bdbf-9b14da68de07",
+      "DisplayName": "MoogleEngine",
+      "ColorIndex": 1
+    }
+  },
+  "NextColorIndex": 2
+}
