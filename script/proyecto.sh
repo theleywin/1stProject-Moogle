@@ -1,76 +1,131 @@
 #!/bin/bash
+clear
 
-informe_tex="informe.tex"
-presentacion_tex="presentacion.tex"
-informe_pdf="informe.pdf"
-presentacion_pdf="presentacion.pdf"
+run(){
+    echo "\e[45m                                                                                                                       \e[49m
 
-function clean {
-cd "../informe"
-rm -f *.log *.gz *.aux *.nav *.snm *.toc
-cd "../presentacion"
-rm -f *.log *.gz *.aux *.nav *.snm *.toc
-echo "todo limpio"
+   __ _                 _                  _                                  _            
+  /__(_) ___  ___ _   _| |_ __ _ _ __   __| | ___     /\/\   ___   ___   __ _| | ___       
+ /_\ | |/ _ \/ __| | | | __/ _     _ \ / _  |/ _ \   /    \ / _ \ / _ \ / _  | |/ _ \      
+//__ | |  __/ (__| |_| | || (_| | | | | (_| | (_) | / /\/\ \ (_) | (_) | (_| | |  __/_ _ _ 
+\__/_/ |\___|\___|\__,_|\__\__,_|_| |_|\__,_|\___/  \/    \/\___/ \___/ \__, |_|\___(_|_|_)
+   |__/                                                                 |___/              
+
+\e[45m                                                                                                                       \e[49m"
+                                            
+    cd ../
+    dotnet watch run --project MoogleServer
 }
 
-function run {
-cd ".."
-make dev
+report(){
+    clear 
+    echo "\e[45m                                                                                                                       \e[49m
+
+
+   ___                      _ _                 _           __ _    _____        __                                 
+  / __\___  _ __ ___  _ __ (_) | __ _ _ __   __| | ___     /__\ |   \_   \_ __  / _| ___  _ __ _ __ ___   ___       
+ / /  / _ \|  _   _ \|  _ \| | |/ _  |  _ \ / _  |/ _ \   /_\ | |    / /\/  _ \| |_ / _ \|  __|  _   _ \ / _ \      
+/ /__| (_) | | | | | | |_) | | | (_| | | | | (_| | (_) | //__ | | /\/ /_ | | | |  _| (_) | |  | | | | | |  __/_ _ _ 
+\____/\___/|_| |_| |_|  __/|_|_|\____|_| |_|\____|\___/  \__/ |_| \____/ |_| |_|_|  \___/|_|  |_| |_| |_|\___(_|_|_)
+                     |_|                                                                                            
+                                                                               
+
+\e[45m                                                                                                                       \e[49m"
+                                            
+    cd ../
+    cd Informe
+    pdflatex -synctex=1 -interaction=nonstopmode informe.tex
 }
 
-function report {
-cd "../informe"
- pdflatex "$informe_tex"
+slides(){
+    clear 
+    echo "\e[45m                                                                                                                       \e[49m 
+
+   ___                      _ _                 _            
+  / __\___  _ __ ___  _ __ (_) | __ _ _ __   __| | ___       
+ / /  / _ \| '_   _ \| '_ \| | |/ _  | '_ \ / _  |/ _ \      
+/ /__| (_) | | | | | | |_) | | | (_| | | | | (_| | (_) | _ _ 
+\____/\___/|_| |_| |_| .__/|_|_|\__,_|_| |_|\__,_|\___(_|_|_)
+                     |_|                                     
+
+                                            
+\e[45m                                                                                                                       \e[49m"
+    cd ../
+    cd Presentacion
+    pdflatex -synctex=1 -interaction=nonstopmode presentacion.tex
 }
 
-function slides {
-cd "../presentacion"
- pdflatex "$presentacion_tex"
+show_report(){
+    cd ..
+    cd Informe
+    archivo="informe.pdf"
+
+    if [ ! -e "$archivo" ]; then
+        report
+        xdg-open informe.pdf
+    else
+        xdg-open informe.pdf
+    fi
 }
 
-function show_reporte {
-cd "../informe"
-if [ ! -f "$informe_pdf" ]; then
-report
-fi
-if [ "$1" == "" ]; then
-if [ "$OSTYPE" == "linux-gnu" ]; then 
-xdg-open "$informe_pdf"
-elif [ "$OSTYPE" == "darwin" ]; then
-open "$informe_pdf"
-else
-start "$informe_pdf"
-fi
-else
-"$1" "$informe_pdf"
-fi
+show_report(){
+    cd ..
+    cd Presentacion
+    archivo="presentacion.pdf"
+
+    if [ ! -e "$archivo" ]; then
+        slides
+        xdg-open presentacion.pdf
+    else
+        xdg-open presentacion.pdf
+    fi
 }
 
-function show_slidess {
-cd "../presentacion"
-if [ ! -f "$presentacion_pdf" ]; then
-slides
-fi
-if [ "$1" == "" ]; then
-if [ "$OSTYPE" == "linux-gnu" ]; then 
-xdg-open "$presentacion_pdf"
-elif [ "$OSTYPE" == "darwin" ]; then
-open "$presentacion_pdf"
-else
-start "$presentacion_pdf"
-fi
-else
-"$1" "$presentacion_pdf"
-fi
+clean(){
+    cd ../
+    cd Informe
+    rm -v informe.aux
+    rm -v informe.log
+    rm -v informe.out
+    rm -v informe.pdf
+    rm -v informe.synctex.gz
+    rm -v informe.toc
+
+    cd ../
+    cd Presentacion
+    rm -v presentacion.aux
+    rm -v presentacion.log
+    rm -v presentacion.out
+    rm -v presentacion.pdf
+    rm -v presentacion.synctex.gz
+    rm -v texput.log
 }
 
-case $1 in  
-clean) clean ;;
-run) run ;;
-report) report ;;
-slides) slides ;;
-show_report) show_reporte $2 ;;
-show_slides) show_slidess $2 ;;
-*) echo "invalido" exit 
-esac
-exit
+
+if [ $1 = "run" ]; then
+    clear
+    run
+fi
+
+if [ $1 = "report" ]; then
+    clear
+    report
+fi
+if [ $1 = "slides" ]; then
+    clear
+    slides
+fi
+if [ $1 = "show_report" ]; then
+    clear
+    show_report
+fi
+if [ $1 = "show_slides" ]; then
+    clear
+    show_report
+fi
+if [ $1 = "clean" ]; then
+    clear
+    clean
+fi
+
+
