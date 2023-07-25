@@ -34,7 +34,7 @@ report(){
                                             
     cd ../
     cd Informe
-    pdflatex -synctex=1 -interaction=nonstopmode informe.tex
+    pdflatex -synctex=1 -interaction=nonstopmode Informe.tex
 }
 
 slides(){
@@ -52,52 +52,52 @@ slides(){
 \e[45m                                                                                                                       \e[49m"
     cd ../
     cd Presentacion
-    pdflatex -synctex=1 -interaction=nonstopmode presentacion.tex
+    pdflatex -synctex=1 -interaction=nonstopmode Presentacion.tex
 }
 
 show_report(){
     cd ..
     cd Informe
-    archivo="informe.pdf"
+    archivo="Informe.pdf"
 
     if [ ! -e "$archivo" ]; then
         report
-        xdg-open informe.pdf
+        xdg-open Informe.pdf
     else
-        xdg-open informe.pdf
+        xdg-open Informe.pdf
     fi
 }
 
 show_report(){
     cd ..
     cd Presentacion
-    archivo="presentacion.pdf"
+    archivo="Presentacion.pdf"
 
     if [ ! -e "$archivo" ]; then
         slides
-        xdg-open presentacion.pdf
+        xdg-open Presentacion.pdf
     else
-        xdg-open presentacion.pdf
+        xdg-open Presentacion.pdf
     fi
 }
 
 clean(){
     cd ../
     cd Informe
-    rm -v informe.aux
-    rm -v informe.log
-    rm -v informe.out
-    rm -v informe.pdf
-    rm -v informe.synctex.gz
-    rm -v informe.toc
+    rm -v Informe.aux
+    rm -v Informe.log
+    rm -v Informe.out
+    rm -v Informe.pdf
+    rm -v Informe.synctex.gz
+    rm -v Informe.toc
 
     cd ../
     cd Presentacion
-    rm -v presentacion.aux
-    rm -v presentacion.log
-    rm -v presentacion.out
-    rm -v presentacion.pdf
-    rm -v presentacion.synctex.gz
+    rm -v Presentacion.aux
+    rm -v Presentacion.log
+    rm -v Presentacion.out
+    rm -v Presentacion.pdf
+    rm -v Presentacion.synctex.gz
     rm -v texput.log
 }
 
